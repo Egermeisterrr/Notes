@@ -83,7 +83,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:drawable/editbox_background"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="@+id/edTitle"
         app:layout_constraintHorizontal_bias="0.0"
@@ -103,6 +103,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@android:drawable/screen_background_dark"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageButton

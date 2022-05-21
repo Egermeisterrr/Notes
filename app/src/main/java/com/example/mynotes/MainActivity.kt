@@ -1,9 +1,10 @@
 package com.example.mynotes
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,6 +13,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun add(view: View) {
-
+        startActivity(Intent(this, EditActivity::class.java))
     }
 }
