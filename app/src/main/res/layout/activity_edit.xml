@@ -51,6 +51,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:onClick="onClickSave"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_save"
@@ -92,7 +93,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imMainImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="10dp"
