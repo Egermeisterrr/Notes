@@ -10,8 +10,9 @@ import kotlinx.android.synthetic.main.activity_edit.*
 
 
 class EditActivity : AppCompatActivity() {
-    val myDbManager = MyDbManager(this)
-    val imageRequestCode = 10
+    private val myDbManager = MyDbManager(this)
+    private val imageRequestCode = 10
+    private var imageUri = "empty"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +24,20 @@ class EditActivity : AppCompatActivity() {
         myDbManager.openDb()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        myDbManager.closeDb()
+    }
+
     fun onClickSave(view: View) {
-        myDbManager.insertToDb(edTitle.text.toString(), edDesc.text.toString())
+        val myTitle = edTitle.text.toString()
+        val myDesk = edDesc.text.toString()
+
+        if(myTitle != "" && myDesk != "") {
+            myDbManager.insertToDb(myTitle, myDesk, imageUri)
+        }
+
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     fun openImageEditor(view: View) {
@@ -37,8 +50,17 @@ class EditActivity : AppCompatActivity() {
         addImage.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        myDbManager.closeDb()
+    fun editImage(view: View) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, imageRequestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == imageRequestCode) {
+            imMainImage.setImageURI(data?.data)
+            imageUri = data?.data.toString()
+        }
     }
 }

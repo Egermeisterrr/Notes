@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyNotes</string>
+    <string name="ed_title">Title</string>
+    <string name="ed_desc">Description</string>
 </resources>
