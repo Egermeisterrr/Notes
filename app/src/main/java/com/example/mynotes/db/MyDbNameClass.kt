@@ -8,8 +8,8 @@ object MyDbNameClass : BaseColumns {
     const val COLUMN_NAME_CONTENT = "content"
     const val COLUMN_NAME_IMAGE_URI = "uri"
 
-    const val  DATABASE_VERSION = 1
-    const val  DATABASE_NAME = "MyDb.db"
+    const val DATABASE_VERSION = 1
+    const val DATABASE_NAME = "MyDb.db"
 
     const val CREAT_TABLE =
         "CREATE TABLE IF NOT EXISTS $TABLE_NAME (" +
