@@ -30,14 +30,15 @@ class MyDbManager(private val context: Context) {
     }
 
     @SuppressLint("Range")
-    fun readDbData(): ArrayList<ListItem> {
+    fun readDbData(searchText: String): ArrayList<ListItem> {
         val dataList = ArrayList<ListItem>()
+        val selection = "${MyDbNameClass.COLUMN_NAME_TITLE} like ?"
 
         val cursor = db?.query(
             MyDbNameClass.TABLE_NAME,
             null,
-            null,
-            null,
+            selection,
+            arrayOf("%$searchText%"),
             null,
             null,
             null

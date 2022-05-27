@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mynotes.db.MyDbManager
 import com.example.mynotes.db.MyIntentConstants
 import kotlinx.android.synthetic.main.activity_edit.*
+
 
 
 class EditActivity : AppCompatActivity() {
@@ -19,6 +21,11 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         getMyIntents()
     }
 
@@ -30,6 +37,18 @@ class EditActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         myDbManager.closeDb()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //понять почему не работает
+        /*val id = item.itemId
+        if (id == action_mode_close_button) {
+            return true
+        }
+        else {
+            finish()
+        }*/
+        return super.onOptionsItemSelected(item)
     }
 
     fun onClickSave(view: View) {
