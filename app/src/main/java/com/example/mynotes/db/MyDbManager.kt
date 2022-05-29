@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MyDbManager(private val context: Context) {
     private val myDbHelper = MyDbHelper(context)
@@ -14,26 +16,28 @@ class MyDbManager(private val context: Context) {
         db = myDbHelper.writableDatabase
     }
 
-    fun insertToDb(title: String, content: String, uri: String) {
-        val values = ContentValues().apply {
-            put(MyDbNameClass.COLUMN_NAME_TITLE, title)
-            put(MyDbNameClass.COLUMN_NAME_CONTENT, content)
-            put(MyDbNameClass.COLUMN_NAME_IMAGE_URI, uri)
+    suspend fun insertToDb(title: String, content: String, uri: String) =
+        withContext(Dispatchers.IO) {
+            val values = ContentValues().apply {
+                put(MyDbNameClass.COLUMN_NAME_TITLE, title)
+                put(MyDbNameClass.COLUMN_NAME_CONTENT, content)
+                put(MyDbNameClass.COLUMN_NAME_IMAGE_URI, uri)
+            }
+
+            db?.insert(MyDbNameClass.TABLE_NAME, null, values)
         }
 
-        db?.insert(MyDbNameClass.TABLE_NAME, null, values)
-    }
+    suspend fun updateItem(title: String, content: String, uri: String, id: Int) =
+        withContext(Dispatchers.IO) {
+            val selection = BaseColumns._ID + "=$id"
+            val values = ContentValues().apply {
+                put(MyDbNameClass.COLUMN_NAME_TITLE, title)
+                put(MyDbNameClass.COLUMN_NAME_CONTENT, content)
+                put(MyDbNameClass.COLUMN_NAME_IMAGE_URI, uri)
+            }
 
-    fun updateItem(title: String, content: String, uri: String, id: Int) {
-        val selection = BaseColumns._ID + "=$id"
-        val values = ContentValues().apply {
-            put(MyDbNameClass.COLUMN_NAME_TITLE, title)
-            put(MyDbNameClass.COLUMN_NAME_CONTENT, content)
-            put(MyDbNameClass.COLUMN_NAME_IMAGE_URI, uri)
+            db?.update(MyDbNameClass.TABLE_NAME, values, selection, null)
         }
-
-        db?.update(MyDbNameClass.TABLE_NAME, values, selection, null)
-    }
 
     fun removeItemFromDb(id: String) {
         val selection = BaseColumns._ID + "=$id"
@@ -41,7 +45,7 @@ class MyDbManager(private val context: Context) {
     }
 
     @SuppressLint("Range")
-    fun readDbData(searchText: String): ArrayList<ListItem> {
+    suspend fun readDbData(searchText: String): ArrayList<ListItem> = withContext(Dispatchers.IO) {
         val dataList = ArrayList<ListItem>()
         val selection = "${MyDbNameClass.COLUMN_NAME_TITLE} like ?"
 
@@ -72,7 +76,7 @@ class MyDbManager(private val context: Context) {
         }
         cursor?.close()
 
-        return dataList
+        return@withContext dataList
     }
 
     fun closeDb() {

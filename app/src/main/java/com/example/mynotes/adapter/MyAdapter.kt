@@ -23,11 +23,11 @@ class MyAdapter(
         contextV: Context
     ) : RecyclerView.ViewHolder(view) {
         private val tvTitle: TextView = view.findViewById(R.id.tvTitle)
-        val context =  contextV
+        private val context = contextV
 
         fun setData(item: ListItem) {
             tvTitle.text = item.title
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 val intent = Intent(context, EditActivity::class.java).apply {
                     putExtra(MyIntentConstants.I_TITLE_KEY, item.title)
                     putExtra(MyIntentConstants.I_DESK_KEY, item.desk)

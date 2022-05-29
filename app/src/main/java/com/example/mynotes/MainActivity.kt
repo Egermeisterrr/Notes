@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mynotes.adapter.MyAdapter
 import com.example.mynotes.db.MyDbManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val myAdapter = MyAdapter(ArrayList(), this)
+    private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         myDbManager.openDb()
-        fillAdapter()
+        fillAdapter("")
     }
 
     override fun onDestroy() {
@@ -46,19 +51,22 @@ class MainActivity : AppCompatActivity() {
         rcView.adapter = myAdapter
     }
 
-    fun fillAdapter() {
-        val list = myDbManager.readDbData("")
-        myAdapter.updateAdapter(list)
-        if(list.size > 0) {
-            isEmpty.visibility = View.GONE
-        }
-        else {
-            isEmpty.visibility = View.VISIBLE
+    private fun fillAdapter(text: String) {
+        job?.cancel()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val list = myDbManager.readDbData(text)
+            myAdapter.updateAdapter(list)
+            if (list.size > 0) {
+                isEmpty.visibility = View.GONE
+            } else {
+                isEmpty.visibility = View.VISIBLE
+            }
         }
     }
 
-    private fun getSwapMg() :ItemTouchHelper {
-        return ItemTouchHelper(object:ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
+    private fun getSwapMg(): ItemTouchHelper {
+        return ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -74,14 +82,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSearchView() {
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val list = myDbManager.readDbData(newText!!)
-                myAdapter.updateAdapter(list)
+                fillAdapter(newText!!)
                 return true
             }
         })

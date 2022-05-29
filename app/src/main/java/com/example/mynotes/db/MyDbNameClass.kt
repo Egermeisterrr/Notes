@@ -11,7 +11,7 @@ object MyDbNameClass : BaseColumns {
     const val DATABASE_VERSION = 1
     const val DATABASE_NAME = "MyDb.db"
 
-    const val CREAT_TABLE =
+    const val CREATE_TABLE =
         "CREATE TABLE IF NOT EXISTS $TABLE_NAME (" +
                 "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                 "$COLUMN_NAME_TITLE TEXT," +

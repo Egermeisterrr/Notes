@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mynotes.db.MyDbManager
 import com.example.mynotes.db.MyIntentConstants
 import kotlinx.android.synthetic.main.activity_edit.*
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class EditActivity : AppCompatActivity() {
@@ -56,14 +58,16 @@ class EditActivity : AppCompatActivity() {
         val myTitle = edTitle.text.toString()
         val myDesk = edDesc.text.toString()
 
-        if (myTitle != "" && myDesk != "") {
-            if(isEditState) {
-                myDbManager.updateItem(myTitle, myDesk, imageUri, id)
+        CoroutineScope(Dispatchers.Main).launch {
+            if (myTitle != "" && myDesk != "") {
+                if(isEditState) {
+                    myDbManager.updateItem(myTitle, myDesk, imageUri, id)
+                }
+                else {
+                    myDbManager.insertToDb(myTitle, myDesk, imageUri)
+                }
+                finish()
             }
-            else {
-                myDbManager.insertToDb(myTitle, myDesk, imageUri)
-            }
-            finish()
         }
 
         startActivity(Intent(this, MainActivity::class.java))
