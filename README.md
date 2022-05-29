@@ -1,10 +1,18 @@
 # Notes
-This app is currently in development.
 
-It will be Notes app using SQLite, in witch you can make notes, add images to your notes and search for a note in the list of notes.
+This is a simple notes application using SQLite.
 
-This time my app look like this)
 
-![image](https://user-images.githubusercontent.com/102251036/169663820-b647aa01-847c-4613-8984-e4614d83b8e8.png)
-![image](https://user-images.githubusercontent.com/102251036/169663825-bab344df-e3e1-4ef8-9ea4-6b723d056eb6.png)
-![image](https://user-images.githubusercontent.com/102251036/169663831-f7dd0342-1658-40fa-8d7a-725103a195e4.png)
+Your list of notes will look something like this.
+You can click on the notes to expand them, see the full information and edits.
+You can also swap to delete notes from the list. 
+
+![image](https://user-images.githubusercontent.com/102251036/170877035-7a6682d0-c91e-4836-a93c-a43c766e3802.png)
+
+By clicking on the magnifying glass, you can search for notes.
+
+![image](https://user-images.githubusercontent.com/102251036/170877328-c45d4583-21e5-47f2-b143-706485f4cce3.png)
+
+This is how adding a note looks like.
+
+![image](https://user-images.githubusercontent.com/102251036/170877003-dbaaadd9-8dcd-4bda-8357-09c216fc2398.png)
