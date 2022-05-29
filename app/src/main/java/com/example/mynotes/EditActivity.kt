@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_edit.*
 
 
 class EditActivity : AppCompatActivity() {
+    private var id = 0
+    private var isEditState = false
     private val myDbManager = MyDbManager(this)
     private val imageRequestCode = 10
     private var imageUri = "empty"
@@ -40,14 +42,13 @@ class EditActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //понять почему не работает
-        /*val id = item.itemId
-        if (id == action_mode_close_button) {
+        val id = item.itemId
+        if (id == androidx.appcompat.R.id.action_mode_close_button) {
             return true
         }
         else {
             finish()
-        }*/
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -56,7 +57,13 @@ class EditActivity : AppCompatActivity() {
         val myDesk = edDesc.text.toString()
 
         if (myTitle != "" && myDesk != "") {
-            myDbManager.insertToDb(myTitle, myDesk, imageUri)
+            if(isEditState) {
+                myDbManager.updateItem(myTitle, myDesk, imageUri, id)
+            }
+            else {
+                myDbManager.insertToDb(myTitle, myDesk, imageUri)
+            }
+            finish()
         }
 
         startActivity(Intent(this, MainActivity::class.java))
@@ -87,7 +94,7 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    fun getMyIntents() {
+    private fun getMyIntents() {
         val i = intent
 
         if (i != null) {
@@ -95,6 +102,8 @@ class EditActivity : AppCompatActivity() {
                 addImage.visibility = View.GONE
                 edTitle.setText(i.getStringExtra(MyIntentConstants.I_TITLE_KEY))
                 edDesc.setText(i.getStringExtra(MyIntentConstants.I_DESK_KEY))
+                id = i.getIntExtra(MyIntentConstants.I_ID_KEY, 0)
+                isEditState = true
                 if (i.getStringExtra(MyIntentConstants.I_URI_KEY) != "empty") {
                     mainImageLayout.visibility = View.VISIBLE
                     imMainImage.setImageURI(Uri.parse(i.getStringExtra(MyIntentConstants.I_URI_KEY)))

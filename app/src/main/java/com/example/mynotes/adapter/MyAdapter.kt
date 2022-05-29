@@ -32,6 +32,7 @@ class MyAdapter(
                     putExtra(MyIntentConstants.I_TITLE_KEY, item.title)
                     putExtra(MyIntentConstants.I_DESK_KEY, item.desk)
                     putExtra(MyIntentConstants.I_URI_KEY, item.uri)
+                    putExtra(MyIntentConstants.I_ID_KEY, item.id)
                 }
                 context.startActivity(intent)
             }

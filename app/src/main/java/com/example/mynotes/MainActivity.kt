@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun initSearchView() {
+    private fun initSearchView() {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
